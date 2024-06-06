@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Apply Scholarship</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Make the body full height of the viewport */
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 400px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        select, input[type="text"], input[type="number"], input[type="tel"], input[type="submit"] {
+            width: calc(100% - 22px); /* Adjusted width to match other input fields */
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function showSuccessMessage() {
+            alert("Your scholarship application has been submitted successfully!");
+            window.location.href = "home.html";
+        }
+        $(document).ready(function() {
+            // Send GET request to check if the user has already applied
+            $.get("/Scholarship-Application/apply", function(response) {
+                if (response.applied) {
+                    alert("You have already applied for the scholarship.");
+                    window.location.href = "home.html"; // Redirect to home page
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Apply Scholarship</h2>
+        <form action="apply" method="post">
+            <label for="name">Name:</label>
+			<input type="text" id="name" name="name" pattern="[A-Za-z]+" title="Please enter only alphabetic characters" required><br>
+
+            
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required><br>
+            
+            <label for="usn">USN:</label>
+            <input type="text" id="usn" name="usn" required><br>
+            
+            <label for="university">University:</label>
+            <select id="university" name="university" required>
+                <option value="" disabled selected>Select University</option>
+                <option value="Kishkinda">Kishkinda</option>
+                <option value="VTU">VTU</option>
+            </select><br>
+            
+            <label for="college">College Name:</label>
+            <select id="college" name="college" required>
+                <option value="" disabled selected>Select College</option>
+                <option value="BITM">BITM</option>
+                <option value="RYMEC">RYMEC</option>
+            </select><br>
+            
+            <label for="degree">Degree:</label>
+            <select id="degree" name="degree" required>
+                <option value="" disabled selected>Select Degree</option>
+                <option value="B.E">B.E</option>
+                <option value="M.TECH">M.TECH</option>
+            </select><br>
+            
+            <label for="course">Course:</label>
+            <select id="course" name="course" required>
+                <option value="" disabled selected>Select Course</option>
+                <option value="AIML">AIML</option>
+                <option value="CSE">CSE</option>
+                <option value="ECE">ECE</option>
+            </select><br>
+            
+            <label for="semester">Semester:</label>
+            <input type="number" id="semester" name="semester" required><br>
+            
+            <label for="cgpa">CGPA:</label>
+            <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="10" required><br>
+            
+            <input type="submit" value="Apply">
+        </form>
+    </div>
+</body>
+</html>

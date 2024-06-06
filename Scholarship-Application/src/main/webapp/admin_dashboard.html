@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        table { 
+            border-collapse: collapse; 
+            width: 100%; 
+        }
+        th, td { 
+            border: 1px solid #ddd; 
+            padding: 8px; 
+            text-align: left; 
+        }
+        th { 
+            background-color: #f2f2f2; 
+        }
+        button { 
+            padding: 6px 10px; 
+            border: none; 
+            cursor: pointer; 
+        }
+        .approve-button {
+            background-color: #4CAF50; 
+            color: white; 
+        }
+        .reject-button {
+            background-color: #FF5733; 
+            color: white; 
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        // Define the approveApplication function in the global scope
+        function approveApplication(applicationId) {
+            $.ajax({
+                type: "POST",
+                url: "/Scholarship-Application/admin/approve",
+                data: { id: applicationId },
+                success: function(response) {
+                    alert("Application approved successfully!");
+                    location.reload(); // Reload the page to reflect the updated status
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error approving application:", error);
+                    alert("Error approving application. Please try again.");
+                }
+            });
+        }
+        
+        // Define the rejectApplication function in the global scope
+        function rejectApplication(applicationId) {
+            $.ajax({
+                type: "POST",
+                url: "/Scholarship-Application/admin/reject",
+                data: { id: applicationId },
+                success: function(response) {
+                    alert("Application rejected successfully!");
+                    location.reload(); // Reload the page to reflect the updated status
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error rejecting application:", error);
+                    alert("Error rejecting application. Please try again.");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <table id="applicationTable">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        <!-- Application details will be dynamically added here --> 
+    </table>
+    <script>
+        $(document).ready(function() {    
+            // Fetch application data from servlet and populate the table
+            $.get("/Scholarship-Application/admin/dashboard", function(data) {
+                // Iterate through the data and append rows to the table
+                data.forEach(function(application) {
+                    var row = "<tr>";
+                    row += "<td>" + application.id + "</td>";
+                    row += "<td>" + application.name + "</td>";
+                    row += "<td>" + application.email + "</td>";
+                    row += "<td>" + application.status + "</td>";
+                    row += "<td>";
+                    row += "<button class='approve-button' onclick='approveApplication(" + application.id + ")'>Approve</button>  ";
+                    row += "<button class='reject-button' onclick='rejectApplication(" + application.id + ")'>Reject</button>";
+                    row += "</td>";
+                    row += "</tr>";
+                    $("#applicationTable").append(row);
+                });
+            });
+        });
+    </script>          
+</body>
+</html>
